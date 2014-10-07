@@ -1,0 +1,132 @@
+<!--
+Peter Dirks
+cs2830
+Assignment 4
+-->
+<!doctype html>
+<html>
+	<head>
+		<title>Assignment 5 pld9bc</title>
+		<style>
+			
+			body {
+				background-image: url(img/bobby.jpg); /* set background to hotdogs */
+			}
+			#background {							/* create greyish box to hold form inputs */
+				position: absolute;
+				z-index:-1;
+				width: 1260px;
+				height: 670px;
+				padding: 5px;
+				border-radius: 15px;
+				
+				background-color: white;
+				opacity: 0.85;
+			}
+			#outer-Wrapper {
+				width: 900px;
+				margin: auto;
+			}
+			#left-pane {
+				width: 490px;
+				padding: 25px 10px;
+			}
+			#right-pane {
+				/*width: 500px;*/
+			}
+			#canvas {
+				outline-style: dotted;
+				width: 700px;
+				height: 600px;
+				padding: 5px;
+			}
+			/* clear hack... */
+			.group:before, .group:after {
+				content: "";
+				display:table;
+			}
+			.group:after{
+				clear:both;
+			}
+			.column {
+				float: left;
+				padding: 10px;
+				text-indent: 20px;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!--<script src="jquery-2.11.1.js"></script>-->
+		<script>
+			var CSSflag = true;
+			var lastHTML = '';		// keep track of last usage of html and css, for the toggle funcitonality
+			var lastCSS  = '';
+		
+			$(document).ready(function(){	
+
+				// go - applies html and CSS to canvas
+				$("#go").click(function (){
+					console.log("adding HTML...");
+					$("#canvas").html( $("textarea#html-box").val() );
+					if (CSSflag){	// check if CSS is enabled
+						 $("#canvas").append( "<style>"+$("textarea#css-box").val()+"</style>" ) );	// need to append, not add, CSS styling
+					}
+					lastHTML = $("textarea#html-box").val();		// save HTML and CSS to outside variables, storing them allows reloading when toggling
+					lastCSS = "<style>"+$("textarea#css-box").val()+"</style>";	// add style tags to CSS string
+				});
+	
+	
+				// clear function - clears out all fields
+				$("#clear").click(function(){
+					$("#canvas").text("");
+					$("textarea#css-box").val(' ');
+					$("textarea#html-box").val(' ');						
+				});
+	
+				// toggle CSS - turns off/on CSS
+				// "toggles" CSS by just reloading canvas without CSS
+				$("#toggle").click(function(){
+					if (CSSflag == true){		
+						CSSflag = false;					// flip button flag
+						$("#toggle").val("Toggle is off");	// change button text
+						
+						$("#canvas").text("");			// clears out canvas
+						$("#canvas").html( lastHTML );	// load HTML
+						
+					}// end if
+					else if (CSSflag == false){
+						CSSflag = true;						// flip button flag
+						$("#toggle").val("Toggle is on");	// change button text
+						
+						$("#canvas").text("");				// clear canvas
+						$("#canvas").html( lastHTML );		// load HTML
+						$("#canvas").append( lastCSS );		// load CSS	
+										
+					}
+				});
+			})// end ready
+		</script>
+	</head>
+	<body>
+		<img src="img/coolsite.png">
+		<div id="background"></div>
+		<div id="outer-wrapper">
+			<div class="column" id="left-pane">
+				<div id="css-box">
+					<textarea id="css-box" rows="18" cols="60" name="css-box" value="css-box" placeholder="CSS here"></textarea>
+				</div>
+				<div id="html-box">
+					<textarea id="html-box" rows="18" cols="60" name="html-box" placeholder="HTML here"></textarea>
+				</div>
+				<div id="buttons">
+					<input type="button" id="go" name="go" value="go" >
+					<input type="button" id="clear" name="clear" value="clear" >
+					<input type="button" id="toggle" name="toggle" value="Toggle is on" >
+				</div>
+			</div>
+			<div class="column" id="right-pane">
+				<p id="canvas">Let's make a website! :^)</p>
+			</div>
+			
+		</div>
+	<body>
+</html>
